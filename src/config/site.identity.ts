@@ -1,10 +1,10 @@
 export const siteIdentity = {
   code: process.env.NEXT_PUBLIC_SITE_CODE || '4nwinz9vxf',
   name: process.env.NEXT_PUBLIC_SITE_NAME || 'Threebykeep',
-  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Social Bookmarking platform',
+  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Social bookmarking for real research workflows',
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    'A social bookmarking platform for curated links, saved resources, and organized discovery.',
+    'Track useful links from docs, tools, and articles in one place with tags, notes, and fast retrieval for day-to-day work.',
   domain: process.env.NEXT_PUBLIC_SITE_DOMAIN || 'threebykeep.com',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://threebykeep.com',
   ogImage: process.env.NEXT_PUBLIC_SITE_OG_IMAGE || '/og-default.png',
