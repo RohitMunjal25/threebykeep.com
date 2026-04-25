@@ -48,21 +48,21 @@ export type SiteTheme = {
 }
 
 export const DEFAULT_SITE_THEME: SiteTheme = {
-  shell: 'directory',
+  shell: 'editorial',
   hero: {
-    variant: 'search-first',
-    eyebrow: 'Business discovery system',
+    variant: 'catalog-promo',
+    eyebrow: 'Social bookmarking system',
   },
   home: {
-    layout: 'directory-stack',
-    primaryTask: 'listing',
-    featuredTaskKeys: ['listing', 'profile', 'classified'],
+    layout: 'market-catalog',
+    primaryTask: 'sbm',
+    featuredTaskKeys: ['sbm', 'article', 'pdf'],
   },
   navigation: {
-    variant: 'compact',
+    variant: 'editorial',
   },
   footer: {
-    variant: 'columns',
+    variant: 'dense',
   },
   cards: {
     listing: 'listing-elevated',

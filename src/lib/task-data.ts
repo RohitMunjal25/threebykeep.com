@@ -17,6 +17,12 @@ const getPostType = (post: SitePost) => {
   return "";
 };
 
+const getPostTimestamp = (post: SitePost) => {
+  const value = post.publishedAt || post.createdAt || post.updatedAt || "";
+  const parsed = value ? Date.parse(value) : NaN;
+  return Number.isFinite(parsed) ? parsed : 0;
+};
+
 export const getPostTaskKey = (post: SitePost): TaskKey | null => {
   const postType = getPostType(post);
   const matched = SITE_CONFIG.tasks.find((task) => task.contentType === postType);
@@ -46,6 +52,7 @@ export const fetchTaskPosts = async (
         const category = typeof (content as any).category === "string" ? (content as any).category : "";
         return !category || isValidCategory(category);
       })
+      .sort((a, b) => getPostTimestamp(b) - getPostTimestamp(a))
       .slice(0, limit);
   };
 

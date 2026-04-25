@@ -71,9 +71,9 @@ export default function ContactPage() {
               { icon: Mail, title: 'Media kits', body: 'Request creator decks, editorial support, or visual feature placement.' },
             ]
           : [
-              { icon: Bookmark, title: 'Collection submissions', body: 'Suggest resources, boards, and links that deserve a place in the library.' },
-              { icon: Mail, title: 'Resource partnerships', body: 'Coordinate curation projects, reference pages, and link programs.' },
-              { icon: Sparkles, title: 'Curator support', body: 'Need help organizing shelves, collections, or profile-connected boards?' },
+              { icon: Bookmark, title: 'Bookmark submissions', body: 'Share high-quality tools, articles, and references for review.' },
+              { icon: Mail, title: 'Content partnerships', body: 'Coordinate link campaigns, curated lists, and resource collaborations.' },
+              { icon: Sparkles, title: 'Account support', body: 'Get help with collections, profiles, tags, and saved-link workflows.' },
             ]
 
   return (
@@ -83,8 +83,8 @@ export default function ContactPage() {
         <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Contact {SITE_CONFIG.name}</p>
-            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em]">A support page that matches the product, not a generic contact form.</h1>
-            <p className={`mt-5 max-w-2xl text-sm leading-8 ${tone.muted}`}>Tell us what you are trying to publish, fix, or launch. We will route it through the right lane instead of forcing every request into the same support bucket.</p>
+            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em]">Need help with bookmarks, collections, or account setup?</h1>
+            <p className={`mt-5 max-w-2xl text-sm leading-8 ${tone.muted}`}>Send your request and our team will route it to the right support lane for this social bookmarking platform.</p>
             <div className="mt-8 space-y-4">
               {lanes.map((lane) => (
                 <div key={lane.title} className={`rounded-[1.6rem] p-5 ${tone.soft}`}>

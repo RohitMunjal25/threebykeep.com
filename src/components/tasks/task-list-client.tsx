@@ -52,6 +52,15 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
     });
   }, [category, initialPosts, localPosts]);
 
+  const gridClassName =
+    task === "article"
+      ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      : task === "sbm" || task === "social"
+        ? "grid gap-5 lg:grid-cols-2"
+        : task === "pdf"
+          ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          : "grid gap-6 sm:grid-cols-2 lg:grid-cols-4";
+
   if (!merged.length) {
     return (
       <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
@@ -61,7 +70,7 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className={gridClassName}>
       {merged.map((post) => {
         const localOnly = (post as any).localOnly;
         const href = localOnly

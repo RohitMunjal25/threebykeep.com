@@ -100,6 +100,78 @@ const taskCategories: Record<TaskKey, string[]> = {
   comment: ["Opinion", "Reply", "Discussion", "Feedback", "Debate"],
 };
 
+const taskContentTypes: Record<TaskKey, string> = {
+  listing: "listing",
+  classified: "classified",
+  article: "article",
+  image: "image",
+  profile: "profile",
+  social: "social",
+  pdf: "pdf",
+  org: "profile",
+  sbm: "social",
+  comment: "article",
+};
+
+const latestSbmUploads = [
+  {
+    title: "OpenAI API Responses Quickstart",
+    url: "https://platform.openai.com/docs/guides/responses",
+    category: "Technology",
+    description: "Official guide for building fast prompt and tool workflows with the Responses API.",
+    domain: "platform.openai.com",
+  },
+  {
+    title: "Vercel Next.js 16 Production Deployment Guide",
+    url: "https://nextjs.org/docs/app/building-your-application/deploying",
+    category: "Technology",
+    description: "Reliable deployment checklist covering caching, revalidation, and performance flags.",
+    domain: "nextjs.org",
+  },
+  {
+    title: "Web.dev Core Web Vitals Optimization Handbook",
+    url: "https://web.dev/vitals/",
+    category: "Business",
+    description: "Practical field guidance for improving LCP, CLS, and INP on production pages.",
+    domain: "web.dev",
+  },
+  {
+    title: "Ahrefs Technical SEO Checklist",
+    url: "https://ahrefs.com/blog/technical-seo/",
+    category: "Business",
+    description: "Actionable crawl, index, and internal-link audits for real-world SEO maintenance.",
+    domain: "ahrefs.com",
+  },
+  {
+    title: "MDN CSS Container Queries Reference",
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_container_queries",
+    category: "Technology",
+    description: "Reference patterns for building responsive components with container-aware layouts.",
+    domain: "developer.mozilla.org",
+  },
+  {
+    title: "Google Search Central Structured Data Docs",
+    url: "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",
+    category: "News",
+    description: "Schema guidance to improve rich-result eligibility and search appearance quality.",
+    domain: "developers.google.com",
+  },
+  {
+    title: "HubSpot Content Repurposing Framework",
+    url: "https://blog.hubspot.com/marketing/repurpose-content",
+    category: "Social Media",
+    description: "Repurpose one article into multi-channel distribution assets with less production overhead.",
+    domain: "hubspot.com",
+  },
+  {
+    title: "Cloudflare Website Performance Basics",
+    url: "https://developers.cloudflare.com/fundamentals/performance/",
+    category: "Technology",
+    description: "Caching and network performance fundamentals for faster global page delivery.",
+    domain: "developers.cloudflare.com",
+  },
+];
+
 const summaryByTask: Record<TaskKey, string> = {
   listing: "Verified business listing with trusted details.",
   classified: "Fresh deal posted by a verified seller.",
@@ -120,6 +192,35 @@ const buildImage = (task: TaskKey, index: number) =>
   `https://picsum.photos/seed/${taskSeeds[task]}-${index}/1200/800`;
 
 export const getMockPostsForTask = (task: TaskKey): SitePost[] => {
+  if (task === "sbm") {
+    const now = Date.now();
+    return latestSbmUploads.map((item, index) => {
+      const slug = item.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+
+      return {
+        id: `sbm-mock-latest-${index + 1}`,
+        title: item.title,
+        slug,
+        summary: item.description,
+        content: {
+          type: "social",
+          category: item.category,
+          description: item.description,
+          website: item.url,
+          location: "Global",
+          domain: item.domain,
+        },
+        media: [{ url: buildImage("sbm", index), type: "IMAGE" }],
+        tags: ["social", "bookmark", item.category],
+        authorName: "Community Curator",
+        publishedAt: new Date(now - index * 1000 * 60 * 42).toISOString(),
+      };
+    });
+  }
+
   return Array.from({ length: 5 }).map((_, index) => {
     const title = taskTitles[task][index];
     const category = randomFrom(taskCategories[task], index);
@@ -134,7 +235,7 @@ export const getMockPostsForTask = (task: TaskKey): SitePost[] => {
       slug,
       summary: summaryByTask[task],
       content: {
-        type: task,
+        type: taskContentTypes[task],
         category,
         location: "Delhi",
         description: summaryByTask[task],
