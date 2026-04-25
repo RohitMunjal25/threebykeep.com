@@ -2,75 +2,79 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Independent reading platform',
+    tagline: 'Professional social bookmarking network',
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
+    tagline: 'Bookmark once. Reuse forever.',
+  },
+  taskPriority: {
+    primary: 'sbm',
+    secondary: 'article',
   },
   hero: {
-    badge: 'Latest stories and visuals',
-    title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
+    badge: 'Curator-led knowledge feed',
+    title: ['Save trusted links.', 'Build reusable knowledge shelves.'],
     description:
-      'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
+      'Threebykeep is a clean social bookmarking workspace for teams and individuals who collect articles, references, and files they actually want to find again.',
     primaryCta: {
-      label: 'Read latest stories',
-      href: '/articles',
+      label: 'Open bookmarks',
+      href: '/sbm',
     },
     secondaryCta: {
-      label: 'Explore visuals',
-      href: '/images',
+      label: 'Read articles',
+      href: '/articles',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
-    focusLabel: 'Focus',
-    featureCardBadge: 'latest cover rotation',
-    featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
+    searchPlaceholder: 'Search bookmarks, articles, and resources',
+    focusLabel: 'Priority',
+    featureCardBadge: 'curation workflow',
+    featureCardTitle: 'From saved links to structured knowledge in one flow.',
     featureCardDescription:
-      'Recent images and stories stay at the center of the experience without changing any core platform behavior.',
+      'Capture useful links, add context, and revisit collections without losing browsing speed or clarity.',
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
+      title: 'Professional social bookmarking for articles and resources',
       description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
+        'Organize links, read supporting articles, and quickly surface saved resources through a cleaner social bookmarking experience.',
+      openGraphTitle: 'Professional social bookmarking for articles and resources',
       openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+        'Capture, organize, and discover valuable links with a clean bookmarking-first interface.',
+      keywords: ['social bookmarking', 'bookmark collections', 'saved links', 'resource discovery'],
     },
-    introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introBadge: 'How it works',
+    introTitle: 'Designed as a clean bookmarking engine with supporting reading lanes.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'The platform starts with bookmarking as the core action: save links, classify them, and return to them with context already attached.',
+      'Articles work as the secondary lane, helping users move from quick saves into deeper reading without switching tools.',
+      'Other task surfaces stay available and URL-accessible, but remain intentionally lower priority so the main workflow stays focused.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'Primary lane: social bookmarking collections and saved links.',
+      'Secondary lane: article reading and context expansion.',
+      'Low-noise interface tuned for fast scanning and repeat visits.',
+      'Lightweight motion and mobile-first layout for high performance.',
     ],
     primaryLink: {
+      label: 'Open bookmarks',
+      href: '/sbm',
+    },
+    secondaryLink: {
       label: 'Browse articles',
       href: '/articles',
     },
-    secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
-    },
   },
   cta: {
-    badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
+    badge: 'Start curating',
+    title: 'Build a reliable link library with article context and clean organization.',
     description:
-      'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
+      'Save references quickly, organize them by intent, and share a professional bookmark feed that stays searchable over time.',
     primaryCta: {
-      label: 'Get Started Free',
+      label: 'Create account',
       href: '/register',
     },
     secondaryCta: {
-      label: 'Contact Sales',
+      label: 'Contact team',
       href: '/contact',
     },
   },

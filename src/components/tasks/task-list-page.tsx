@@ -7,7 +7,6 @@ import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { fetchTaskPosts } from '@/lib/task-data'
 import { SITE_CONFIG, getTaskConfig, type TaskKey } from '@/lib/site-config'
 import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
-import { taskIntroCopy } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { TASK_LIST_PAGE_OVERRIDE_ENABLED, TaskListPageOverride } from '@/overrides/task-list-page'
 
@@ -37,6 +36,7 @@ const variantShells = {
   'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
   'sbm-curation': 'bg-[linear-gradient(180deg,#fff7ee_0%,#ffffff_100%)]',
   'sbm-library': 'bg-[linear-gradient(180deg,#f7f8fc_0%,#ffffff_100%)]',
+  'pdf-library': 'bg-[linear-gradient(180deg,#fffdf7_0%,#ffffff_100%)]',
 } as const
 
 export async function TaskListPage({ task, category }: { task: TaskKey; category?: string }) {
@@ -45,9 +45,9 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
   }
 
   const taskConfig = getTaskConfig(task)
-  const posts = await fetchTaskPosts(task, 30)
+  const sourceTask: TaskKey = task === 'classified' ? 'sbm' : task
+  const posts = await fetchTaskPosts(sourceTask, 30, { fresh: true, allowMockFallback: true })
   const normalizedCategory = category ? normalizeCategory(category) : 'all'
-  const intro = taskIntroCopy[task]
   const baseUrl = SITE_CONFIG.baseUrl.replace(/\/$/, '')
   const schemaItems = posts.slice(0, 10).map((post, index) => ({
     '@type': 'ListItem',
@@ -216,14 +216,32 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {layoutKey === 'sbm-curation' || layoutKey === 'sbm-library' ? (
-          <section className="mb-12 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-            <div>
-              <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
-              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Curated resources arranged more like collections than a generic post feed.</h1>
-              <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>Bookmarks, saved resources, and reference-style items need calmer grouping and lighter metadata. This variant gives them that separation.</p>
+          <section className="mb-12">
+            <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
+            <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">{taskConfig?.description || 'Latest posts'}</h1>
+            <p className={`mt-4 max-w-3xl text-sm leading-8 ${ui.muted}`}>
+              Save high-value links, docs, and tools in one stream. Each bookmark includes source context so teams can quickly revisit
+              trusted resources without searching from scratch.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3 text-xs">
+              <span className={`rounded-full px-3 py-1 ${ui.soft}`}>Latest community uploads</span>
+              <span className={`rounded-full px-3 py-1 ${ui.soft}`}>Tagged by category</span>
+              <span className={`rounded-full px-3 py-1 ${ui.soft}`}>Built for fast recall</span>
             </div>
-            <div className={`rounded-[2rem] p-6 ${ui.panel}`}>
-              <p className={`text-xs uppercase tracking-[0.24em] ${ui.muted}`}>Collection filter</p>
+          </section>
+        ) : null}
+
+        {task === 'pdf' ? (
+          <section className="mb-12 grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-start">
+            <div className={`rounded-[2rem] p-7 ${ui.panel}`}>
+              <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Utility-first document library with fast file scanning.</h1>
+              <p className={`mt-4 max-w-2xl text-sm leading-8 ${ui.muted}`}>
+                PDFs are presented in a practical grid rhythm with stronger metadata cues so users can find reference files quickly.
+              </p>
+            </div>
+            <div className={`rounded-[2rem] p-6 ${ui.soft}`}>
+              <p className={`text-xs uppercase tracking-[0.24em] ${ui.muted}`}>Document filter</p>
               <form className="mt-4 flex items-center gap-3" action={taskConfig?.route || '#'}>
                 <select name="category" defaultValue={normalizedCategory} className={`h-11 flex-1 rounded-xl px-3 text-sm ${ui.input}`}>
                   <option value="all">All categories</option>
@@ -233,25 +251,16 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                 </select>
                 <button type="submit" className={`h-11 rounded-xl px-4 text-sm font-medium ${ui.button}`}>Apply</button>
               </form>
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                {['Reports', 'Guides', 'Manuals'].map((item) => (
+                  <div key={item} className={`rounded-xl px-3 py-2 text-xs font-semibold uppercase tracking-[0.15em] ${ui.panel}`}>{item}</div>
+                ))}
+              </div>
             </div>
           </section>
         ) : null}
 
-        {intro ? (
-          <section className={`mb-12 rounded-[2rem] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:p-8 ${ui.panel}`}>
-            <h2 className="text-2xl font-semibold text-foreground">{intro.title}</h2>
-            {intro.paragraphs.map((paragraph) => (
-              <p key={paragraph.slice(0, 40)} className={`mt-4 text-sm leading-7 ${ui.muted}`}>{paragraph}</p>
-            ))}
-            <div className="mt-4 flex flex-wrap gap-4 text-sm">
-              {intro.links.map((link) => (
-                <a key={link.href} href={link.href} className="font-semibold text-foreground hover:underline">{link.label}</a>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        <TaskListClient task={task} initialPosts={posts} category={normalizedCategory} />
+        <TaskListClient task={sourceTask} initialPosts={posts} category={normalizedCategory} />
       </main>
       <Footer />
     </div>
