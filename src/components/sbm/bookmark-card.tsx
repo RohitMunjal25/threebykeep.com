@@ -73,10 +73,32 @@ export function BookmarkCard({
   }
 
   const handleShare = async () => {
+    // Check if we're on the client side
+    if (typeof window === 'undefined') {
+      setShareLabel('Copy failed')
+      setTimeout(() => setShareLabel('Share'), 1500)
+      return
+    }
+
+    // Check if clipboard API is available
+    if (!navigator.clipboard) {
+      setShareLabel('Copy failed')
+      setTimeout(() => setShareLabel('Share'), 1500)
+      return
+    }
+
     try {
       await navigator.clipboard.writeText(bookmark.url)
-      setShareLabel('Copied')
-      setTimeout(() => setShareLabel('Share'), 1500)
+      
+      // Verify the copy was successful by trying to read it back
+      const copiedText = await navigator.clipboard.readText()
+      if (copiedText === bookmark.url) {
+        setShareLabel('Copied')
+        setTimeout(() => setShareLabel('Share'), 1500)
+      } else {
+        setShareLabel('Copy failed')
+        setTimeout(() => setShareLabel('Share'), 1500)
+      }
     } catch {
       setShareLabel('Copy failed')
       setTimeout(() => setShareLabel('Share'), 1500)

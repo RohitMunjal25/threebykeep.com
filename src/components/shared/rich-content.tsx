@@ -20,14 +20,52 @@ const sanitizeRichHtml = (html: string) =>
 export const formatRichHtml = (raw?: string | null, fallback = "Details coming soon.") => {
   const source = typeof raw === "string" ? raw.trim() : "";
   if (!source) return `<p>${escapeHtml(fallback)}</p>`;
+  
+  // If the source already contains HTML tags, sanitize it and ensure paragraphs
   if (/<[a-z][\s\S]*>/i.test(source)) {
-    return sanitizeRichHtml(source);
+    const sanitized = sanitizeRichHtml(source);
+    
+    // Convert any text not wrapped in paragraphs into paragraphs
+    const paragraphized = sanitized
+      // Wrap text nodes that aren't already in block elements
+      .replace(/(^|>)([^<\n][^<>]*?)(<|$)/g, (match, start, text, end) => {
+        // Skip if text is too short or already in a block element
+        if (text.trim().length < 3 || start.includes('<p>') || end.includes('</p>')) {
+          return match;
+        }
+        return `${start}<p>${escapeHtml(text.trim())}</p>${end}`;
+      })
+      // Convert multiple line breaks to paragraphs
+      .replace(/(?:<br\s*\/?>\s*){2,}/gi, '</p><p>')
+      // Convert single line breaks to spaces within paragraphs
+      .replace(/<br\s*\/?>/gi, ' ')
+      // Clean up any empty paragraphs
+      .replace(/<p>\s*<\/p>/gi, '')
+      // Ensure proper paragraph spacing
+      .replace(/<\/p><p>/g, '</p>\n<p>');
+    
+    return paragraphized;
   }
 
+  // For plain text, convert to paragraphs with better handling
   return source
+    // First, normalize line breaks
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    // Split on double line breaks or multiple consecutive line breaks
     .split(/\n{2,}/)
-    .map((paragraph) => `<p>${escapeHtml(paragraph.replace(/\n/g, " ").trim())}</p>`)
-    .join("");
+    .map((paragraph) => {
+      const cleanParagraph = paragraph
+        .replace(/\n/g, ' ') // Convert single line breaks to spaces
+        .trim();
+      
+      // Skip empty paragraphs
+      if (!cleanParagraph) return '';
+      
+      return `<p>${escapeHtml(cleanParagraph)}</p>`;
+    })
+    .filter(Boolean) // Remove empty paragraphs
+    .join('\n');
 };
 
 const baseClasses =
