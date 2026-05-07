@@ -193,32 +193,8 @@ const buildImage = (task: TaskKey, index: number) =>
 
 export const getMockPostsForTask = (task: TaskKey): SitePost[] => {
   if (task === "sbm") {
-    const now = Date.now();
-    return latestSbmUploads.map((item, index) => {
-      const slug = item.title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "");
-
-      return {
-        id: `sbm-mock-latest-${index + 1}`,
-        title: item.title,
-        slug,
-        summary: item.description,
-        content: {
-          type: "social",
-          category: item.category,
-          description: item.description,
-          website: item.url,
-          location: "Global",
-          domain: item.domain,
-        },
-        media: [{ url: buildImage("sbm", index), type: "IMAGE" }],
-        tags: ["social", "bookmark", item.category],
-        authorName: "Community Curator",
-        publishedAt: new Date(now - index * 1000 * 60 * 42).toISOString(),
-      };
-    });
+    // Return empty array to remove mock cards from bookmark page
+    return [];
   }
 
   return Array.from({ length: 5 }).map((_, index) => {
