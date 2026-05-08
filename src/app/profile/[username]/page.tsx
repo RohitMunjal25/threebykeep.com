@@ -130,7 +130,7 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
                 <p className="mt-1 text-sm font-medium text-muted-foreground">{domain}</p>
               ) : null}
               <article
-                className="article-content prose prose-slate mt-6 max-w-2xl text-base leading-relaxed prose-p:my-4 prose-a:text-primary prose-a:underline prose-strong:font-semibold"
+                className="article-content prose prose-slate mt-6 max-w-2xl text-base leading-relaxed prose-p:my-0 prose-a:text-primary prose-a:underline prose-strong:font-semibold"
                 dangerouslySetInnerHTML={{ __html: descriptionHtml }}
               />
               {website ? (
