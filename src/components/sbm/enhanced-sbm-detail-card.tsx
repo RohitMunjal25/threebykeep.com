@@ -10,7 +10,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { RichContent, formatRichHtml } from '@/components/shared/rich-content'
+import { RichContent } from '@/components/shared/rich-content'
 import { SharePopup } from '@/components/ui/share-popup'
 
 interface EnhancedSBMDetailCardProps {
@@ -143,12 +143,30 @@ export function EnhancedSBMDetailCard({
             </div>
 
             {/* Description */}
-            <div className="prose prose-neutral dark:prose-invert max-w-none">
-              <RichContent 
-                html={formatRichHtml(description, "No description available.")} 
-                className="text-base leading-7 text-muted-foreground prose-p:text-muted-foreground prose-p:my-3" 
-              />
-            </div>
+            <div 
+              className="text-base leading-7 text-muted-foreground [&>*]:inline [&>*]:m-0 [&>*]:p-0 [&_a]:text-red-500 [&_a]:underline [&_a]:underline-offset-2"
+              dangerouslySetInnerHTML={{
+                __html: (() => {
+                  let html = description
+                    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+                    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+                    .replace(/<iframe[^>]*>[\s\S]*?<\/iframe>/gi, "")
+                    .replace(/<object[^>]*>[\s\S]*?<\/object>/gi, "")
+                    .replace(/\son[a-z]+\s*=\s*(['"]).*?\1/gi, "")
+                    .replace(/\shref\s*=\s*(['"])javascript:.*?\1/gi, ' href="#"')
+                    .replace(/style\s*=\s*"[^"]*display\s*:\s*block[^"]*"/gi, '')
+                    .replace(/<br\s*\/?>/gi, ' ')
+                    .replace(/<\/p>\s*<p[^>]*>/gi, ' ')
+                    .replace(/<p[^>]*>/gi, '<span>')
+                    .replace(/<\/p>/gi, '</span>')
+                    .replace(/<div[^>]*>/gi, '<span>')
+                    .replace(/<\/div>/gi, '</span>')
+                    .replace(/\n+/g, ' ')
+                    .trim();
+                  return html || "No description available.";
+                })()
+              }}
+            />
 
             {/* Tags */}
             {tags.length > 0 && (
